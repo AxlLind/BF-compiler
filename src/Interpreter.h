@@ -7,7 +7,7 @@
 #include "Instruction.h"
 
 class Interpreter {
-    std::vector<unsigned char> tape{50};
+    std::vector<unsigned char> tape;
     int pos = 0;
 
     void runtime_error(const std::string &message) {
@@ -20,7 +20,7 @@ class Interpreter {
         if (pos < 0)
             runtime_error("Runtime error: Stepped outside of tape");
         if (pos >= tape.size())
-            tape.resize(pos, '\0');
+            tape.resize(tape.size() * 2);
     }
 
     void loop(const Instruction &i) {
@@ -29,7 +29,7 @@ class Interpreter {
             std::for_each(i.insts->begin(), i.insts->end(), exec);
     }
 
-    void print() { std::cout << tape[pos]; }
+    void print() { putchar(tape[pos]); }
     void read()  { std::cin >> tape[pos];  }
 
     void execute(const Instruction &i) {
@@ -45,7 +45,7 @@ class Interpreter {
     }
 
 public:
-    Interpreter() { std::fill(tape.begin(), tape.end(), '\0'); }
+    Interpreter() : tape(1) { }
 
     void run(std::queue<Instruction> insts) {
         while (!insts.empty()) {

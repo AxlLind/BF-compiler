@@ -10,17 +10,18 @@ class Parser {
 private:
     std::queue<char> tokens;
 
-    void parser_error(const std::string &message) {
+    void parser_error(const std::string &message, int exit_code = 1) {
         std::cout << message << '\n';
-        exit(1);
+        exit(exit_code);
     }
 
     Instruction loop() {
-        std::shared_ptr<std::vector<Instruction>> v(new std::vector<Instruction>);
+        std::shared_ptr<std::vector<Instruction>> v(new std::vector<Instruction>());
         tokens.pop(); // pop the '['
         while(tokens.front() != ']') {
             v->emplace_back(inst(tokens.front()));
-            if (tokens.empty()) parser_error("Program ended without ending loop");
+            if (tokens.empty())
+                parser_error("Program ended without ending loop");
         }
         // ']' token gets poped in inst
         return { LOOP, v };
@@ -36,8 +37,10 @@ private:
             case '<': i = MOVE_L; break;
             case '>': i = MOVE_R; break;
             case '[': i = loop(); break;
-            case ']': parser_error("']' before a loop start");
-            default: parser_error("Parser: Should never get here");
+            case ']':
+                parser_error("']' before a loop start");
+            default:
+                parser_error("Parser: Should never get here", 2);
         }
         tokens.pop();
         return i;
