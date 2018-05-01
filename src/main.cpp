@@ -3,14 +3,17 @@
 #include <queue>
 #include "Lexer.h"
 #include "Parser.h"
-#include "Interpreter.h"
+#include "BFInterpreter.h"
 
 int main(int argc, char *argv[]) {
+    // Filter the input into tokens
     auto tokens = (argc == 2 ? lexer(argv[1]) : lexer());
 
+    // Parse the tokens into instructions
     Parser p(tokens);
     auto insts = p.parse();
 
-    Interpreter i;
+    // Run the instructions
+    BFInterpreter i;
     i.run(insts);
 }

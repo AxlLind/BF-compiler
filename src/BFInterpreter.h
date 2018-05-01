@@ -1,12 +1,11 @@
-#ifndef INTERPRETER_H
-#define INTERPRETER_H
+#ifndef BFINTERPRETER_H
+#define BFINTERPRETER_H
 
 #include <vector>
 #include <queue>
-#include <stdio.h>
 #include "Instruction.h"
 
-class Interpreter {
+class BFInterpreter {
     std::vector<unsigned char> tape;
     int pos = 0;
 
@@ -30,7 +29,7 @@ class Interpreter {
     }
 
     void print() { putchar(tape[pos]); }
-    void read()  { std::cin >> tape[pos];  }
+    void read()  { tape[pos] = getchar(); }
 
     void execute(const Instruction &i) {
         switch (i.type) {
@@ -45,7 +44,7 @@ class Interpreter {
     }
 
 public:
-    Interpreter() : tape(1) { }
+    BFInterpreter() : tape(1) { }
 
     void run(std::queue<Instruction> insts) {
         while (!insts.empty()) {
@@ -55,4 +54,4 @@ public:
     }
 };
 
-#endif /* INTERPRETER_H */
+#endif /* BFINTERPRETER_H */
