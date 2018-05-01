@@ -1,9 +1,15 @@
 #include <iostream>
 #include <algorithm>
-#include <vector>
+#include <queue>
 #include "Lexer.h"
+#include "Parser.h"
 
 int main(int argc, char *argv[]) {
-    std::vector<char> v = (argc == 2 ? lexer(argv[1]) : lexer());
-    std::for_each(v.begin(), v.end(), putchar);
+    std::queue<char> v = (argc == 2 ? lexer(argv[1]) : lexer());
+    Parser p(v);
+    auto q = p.parse();
+    while (!q.empty()) {
+        std::cout << q.front();
+        q.pop();
+    }
 }
