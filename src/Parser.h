@@ -16,14 +16,14 @@ private:
     }
 
     Instruction loop() {
-        std::unique_ptr<std::vector<Instruction>> v(new std::vector<Instruction>);
+        std::shared_ptr<std::vector<Instruction>> v(new std::vector<Instruction>);
         tokens.pop(); // pop the '['
         while(tokens.front() != ']') {
             v->emplace_back(inst(tokens.front()));
             if (tokens.empty()) parser_error("Program ended without ending loop");
         }
         // ']' token gets poped in inst
-        return { LOOP, std::move(v) };
+        return { LOOP, v };
     }
 
     Instruction inst(char c) {

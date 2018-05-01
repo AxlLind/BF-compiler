@@ -1,21 +1,22 @@
 #ifndef INSTRUCTION_H
 #define INSTRUCTION_H
 
+#include <iostream>
 #include <queue>
 
 enum InstructionType {INC, DECR, LOOP, OUT, IN, MOVE_L, MOVE_R};
 
 struct Instruction {
     InstructionType type;
-    std::unique_ptr<std::vector<Instruction>> insts;
+    std::shared_ptr<std::vector<Instruction>> insts;
 
-    Instruction(InstructionType type, std::unique_ptr< std::vector<Instruction> > v = nullptr) : type(type), insts(std::move(v)) {}
+    Instruction(InstructionType type, std::shared_ptr< std::vector<Instruction> > v = nullptr) : type(type), insts(v) {}
 
     // Yay, c++!
     Instruction() = default;
-    Instruction(Instruction &rhs) = default;
+    Instruction(const Instruction &rhs) = default;
     Instruction(Instruction &&rhs) = default;
-    Instruction& operator=(Instruction &i) = default;
+    Instruction& operator=(const Instruction &i) = default;
     Instruction& operator=(Instruction &&i) = default;
     ~Instruction() = default;
 };

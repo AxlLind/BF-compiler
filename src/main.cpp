@@ -3,13 +3,14 @@
 #include <queue>
 #include "Lexer.h"
 #include "Parser.h"
+#include "Interpreter.h"
 
 int main(int argc, char *argv[]) {
-    std::queue<char> v = (argc == 2 ? lexer(argv[1]) : lexer());
-    Parser p(v);
-    auto q = p.parse();
-    while (!q.empty()) {
-        std::cout << q.front();
-        q.pop();
-    }
+    auto tokens = (argc == 2 ? lexer(argv[1]) : lexer());
+
+    Parser p(tokens);
+    auto insts = p.parse();
+
+    Interpreter i;
+    i.run(insts);
 }
