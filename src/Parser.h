@@ -10,9 +10,9 @@ class Parser {
 private:
     std::queue<char> tokens;
 
-    void parser_error(const std::string &message, int exit_code = 1) {
+    void parser_error(const std::string &message, int code = 1) {
         std::cout << message << '\n';
-        exit(exit_code);
+        exit(code);
     }
 
     Instruction loop() {

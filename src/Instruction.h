@@ -10,31 +10,9 @@ struct Instruction {
     InstructionType type;
     std::shared_ptr<std::vector<Instruction>> insts;
 
-    Instruction(InstructionType type, std::shared_ptr< std::vector<Instruction> > v = nullptr) : type(type), insts(v) {}
-
-    // Yay, c++!
     Instruction() = default;
-    Instruction(const Instruction &rhs) = default;
-    Instruction(Instruction &&rhs) = default;
-    Instruction& operator=(const Instruction &i) = default;
-    Instruction& operator=(Instruction &&i) = default;
-    ~Instruction() = default;
+    Instruction(const Instruction&) = default;
+    Instruction(InstructionType type, std::shared_ptr< std::vector<Instruction> > v = nullptr) : type(type), insts(v) { }
 };
-
-std::ostream& operator<<(std::ostream &os, const Instruction &i) {
-    switch(i.type) {
-        case INC:    return os << "INC\n";
-        case DECR:   return os << "DECR\n";
-        case OUT:    return os << "OUT\n";
-        case IN:     return os << "IN\n";
-        case MOVE_L: return os << "MOVE_L\n";
-        case MOVE_R: return os << "MOVE_R\n";
-        case LOOP:
-            os << "LOOP START\n";
-            std::for_each(i.insts->begin(), i.insts->end(), [&os](Instruction &i){ os << "  " << i; });
-            os << "LOOP END\n";
-    }
-    return os;
-}
 
 #endif /* INSTRUCTION_H */

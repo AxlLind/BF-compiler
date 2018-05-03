@@ -26,7 +26,6 @@ std::queue<char> lexer(std::string file_path) {
     }
     is.close();
     return tokens;
-
 }
 
 #endif /* LEXER_H */

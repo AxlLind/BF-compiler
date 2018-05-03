@@ -1,9 +1,31 @@
-#include <algorithm>
+#include <cstdio>
+#include <cstdlib>
 
 unsigned char tape[500] = {0}, *p = tape;
 char in[500], *e = in;
 
-void loop();
+char* find_end() {
+    char *end = e;
+    int depth = 0;
+    while (*end != ']' || depth > 0) {
+        if (*end == '[') ++depth;
+        if (*end == ']') --depth;
+        ++end;
+    }
+    return ++end; // skip the ']'
+}
+
+void exec(char c); // forw decl
+void loop() {
+    char *start = e;
+    while (*p != 0) {
+        while (*e != ']')
+            exec(*e);
+        e = start;
+    }
+    e = find_end();
+}
+
 void exec(char c) {
     ++e;
     switch(c) {
@@ -16,24 +38,6 @@ void exec(char c) {
         case '.': putchar(*p);    break;
         case ',': *p = getchar(); break;
     }
-}
-
-void loop() {
-    char *start = e;
-    while (*p != 0) {
-        char *start = e;
-        while (*e != ']')
-            exec(*e);
-        e = start;
-    }
-    int depth = 0;
-    while (*e != ']' || depth > 0) { // find end of loop
-        if (*e == '[') ++depth;
-        if (*e == ']') --depth;
-        ++e;
-    }
-    ++e; // skip the ']'
-    return;
 }
 
 int main() {
